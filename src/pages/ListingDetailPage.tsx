@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Phone, Mail, MapPin, Calendar, Gauge, Zap, Settings, ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
+import {
+  ArrowLeft, Phone, Mail, MapPin, Calendar, Gauge, Settings2,
+  ChevronLeft, ChevronRight, CheckCircle2, Heart, Share2,
+  Fuel, Users, Info, Tag
+} from 'lucide-react';
 import { CarListing } from '@/types';
 import { getListings } from '@/lib/storage';
 import { formatCurrency, formatMileage, formatDate } from '@/lib/utils';
@@ -11,6 +15,7 @@ export default function ListingDetailPage() {
   const [listing, setListing] = useState<CarListing | null>(null);
   const [imgIdx, setImgIdx] = useState(0);
   const [contactVisible, setContactVisible] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -21,199 +26,326 @@ export default function ListingDetailPage() {
 
   if (!listing) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <p className="text-brand-light/50 text-lg">Listing not found.</p>
-        <Link to="/listings" className="mt-4 inline-block text-brand-gold hover:underline">← Back to listings</Link>
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <div className="text-center">
+          <p className="text-brand-muted text-lg mb-4">Listing not found.</p>
+          <Link to="/listings" className="text-brand-gold hover:text-brand-gold-light transition-colors font-medium">
+            ← Back to listings
+          </Link>
+        </div>
       </div>
     );
   }
 
-  const specs = [
-    { label: 'Year', value: listing.year },
+  const conditionColors: Record<string, string> = {
+    Excellent: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25',
+    Good: 'bg-blue-500/15 text-blue-400 border-blue-500/25',
+    Fair: 'bg-amber-500/15 text-amber-400 border-amber-500/25',
+    Poor: 'bg-orange-500/15 text-orange-400 border-orange-500/25',
+    Project: 'bg-red-500/15 text-red-400 border-red-500/25',
+  };
+
+  const keySpecs = [
+    { icon: <Calendar size={16} />, label: 'Year', value: String(listing.year) },
+    { icon: <Gauge size={16} />, label: 'Mileage', value: formatMileage(listing.mileage) },
+    { icon: <Fuel size={16} />, label: 'Fuel', value: listing.fuelType },
+    { icon: <Settings2 size={16} />, label: 'Transmission', value: listing.transmission },
+    { icon: <Users size={16} />, label: 'Doors', value: String(listing.doors) },
+    { icon: <Tag size={16} />, label: 'Body', value: listing.bodyStyle },
+  ];
+
+  const allSpecs = [
     { label: 'Make', value: listing.make },
     { label: 'Model', value: listing.model },
+    { label: 'Year', value: String(listing.year) },
     { label: 'Body Style', value: listing.bodyStyle },
-    { label: 'Mileage', value: formatMileage(listing.mileage) },
     { label: 'Condition', value: listing.condition },
+    { label: 'Mileage', value: formatMileage(listing.mileage) },
     { label: 'Engine', value: listing.engineSize },
     { label: 'Horsepower', value: `${listing.horsepower} hp` },
-    { label: 'Cylinders', value: listing.cylinders },
+    { label: 'Cylinders', value: String(listing.cylinders) },
     { label: 'Transmission', value: listing.transmission },
     { label: 'Drive Type', value: listing.driveType },
     { label: 'Fuel Type', value: listing.fuelType },
-    { label: 'Doors', value: listing.doors },
-    { label: 'Exterior Color', value: listing.exteriorColor },
-    { label: 'Interior Color', value: listing.interiorColor },
+    { label: 'Doors', value: String(listing.doors) },
+    { label: 'Ext. Color', value: listing.exteriorColor },
+    { label: 'Int. Color', value: listing.interiorColor },
     { label: 'VIN', value: listing.vin },
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-      <Link to="/listings" className="flex items-center gap-2 text-brand-gold/60 hover:text-brand-gold mb-6 text-sm transition-colors">
-        <ArrowLeft size={16} /> Back to Listings
-      </Link>
+    <div className="min-h-screen bg-brand-darker">
+      {/* Breadcrumb */}
+      <div className="border-b border-white/5 bg-brand-darker/80 backdrop-blur-xl sticky top-16 z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+          <Link
+            to="/listings"
+            className="flex items-center gap-2 text-brand-muted hover:text-brand-gold transition-colors text-sm font-medium"
+          >
+            <ArrowLeft size={15} />
+            Back to Listings
+          </Link>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setLiked(l => !l)}
+              className={clsx(
+                'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm transition-all border',
+                liked
+                  ? 'bg-red-500/15 text-red-400 border-red-500/25'
+                  : 'bg-brand-surface border-white/10 text-brand-muted hover:text-brand-light'
+              )}
+            >
+              <Heart size={14} className={liked ? 'fill-red-400' : ''} />
+              Save
+            </button>
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm bg-brand-surface border border-white/10 text-brand-muted hover:text-brand-light transition-all">
+              <Share2 size={14} />
+              Share
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left: Images + specs */}
-        <div className="lg:col-span-2">
-          {/* Image gallery */}
-          <div className="relative bg-brand-dark rounded-lg overflow-hidden mb-6 h-80 md:h-96">
-            {listing.images && listing.images.length > 0 ? (
-              <>
-                <img src={listing.images[imgIdx]} alt={listing.title} className="w-full h-full object-cover" />
-                {listing.images.length > 1 && (
-                  <>
-                    <button
-                      onClick={() => setImgIdx(i => Math.max(0, i - 1))}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-brand-dark/80 text-brand-gold p-2 rounded-full"
-                    >
-                      <ChevronLeft size={20} />
-                    </button>
-                    <button
-                      onClick={() => setImgIdx(i => Math.min(listing.images.length - 1, i + 1))}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-brand-dark/80 text-brand-gold p-2 rounded-full"
-                    >
-                      <ChevronRight size={20} />
-                    </button>
-                    <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
-                      {listing.images.map((_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setImgIdx(i)}
-                          className={clsx('w-2 h-2 rounded-full transition-colors', i === imgIdx ? 'bg-brand-gold' : 'bg-brand-light/30')}
-                        />
-                      ))}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* ── LEFT COLUMN ── */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Image gallery */}
+            <div className="relative rounded-3xl overflow-hidden bg-brand-surface" style={{ height: '420px' }}>
+              {listing.images && listing.images.length > 0 ? (
+                <>
+                  <img
+                    src={listing.images[imgIdx]}
+                    alt={listing.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+                  {listing.images.length > 1 && (
+                    <>
+                      <button
+                        onClick={() => setImgIdx(i => Math.max(0, i - 1))}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/70 transition-all"
+                      >
+                        <ChevronLeft size={20} />
+                      </button>
+                      <button
+                        onClick={() => setImgIdx(i => Math.min(listing.images.length - 1, i + 1))}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/70 transition-all"
+                      >
+                        <ChevronRight size={20} />
+                      </button>
+                      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                        {listing.images.map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setImgIdx(i)}
+                            className={clsx(
+                              'rounded-full transition-all',
+                              i === imgIdx ? 'w-6 h-2 bg-brand-gold' : 'w-2 h-2 bg-white/40 hover:bg-white/70'
+                            )}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  {/* Image count */}
+                  {listing.images.length > 1 && (
+                    <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full">
+                      {imgIdx + 1} / {listing.images.length}
                     </div>
-                  </>
-                )}
-              </>
-            ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-brand-dark to-brand-darker">
-                <svg width="160" height="100" viewBox="0 0 80 50" fill="none">
-                  <path d="M5 35 L8 28 L18 18 L62 18 L72 28 L75 35 Z" fill="#2a1500" stroke="#c9a84c" strokeWidth="1.5"/>
-                  <path d="M18 18 L24 10 L56 10 L62 18" fill="#1a0a00" stroke="#c9a84c" strokeWidth="1"/>
-                  <circle cx="18" cy="38" r="6" fill="none" stroke="#c9a84c" strokeWidth="1.5"/>
-                  <circle cx="62" cy="38" r="6" fill="none" stroke="#c9a84c" strokeWidth="1.5"/>
-                </svg>
-                <p className="text-brand-gold/40 text-sm mt-3">No Photos Available</p>
+                  )}
+                </>
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-brand-surface to-brand-surface-2">
+                  <svg width="120" height="75" viewBox="0 0 90 55" fill="none">
+                    <path d="M6 40 L9 32 L21 21 L69 21 L81 32 L84 40 Z" fill="#13131f" stroke="#c9a84c" strokeWidth="1.5" strokeLinejoin="round"/>
+                    <path d="M21 21 L27 13 L63 13 L69 21" fill="#0f0f1a" stroke="#c9a84c" strokeWidth="1" strokeLinejoin="round"/>
+                    <circle cx="21" cy="43" r="7" fill="none" stroke="#c9a84c" strokeWidth="1.5"/>
+                    <circle cx="69" cy="43" r="7" fill="none" stroke="#c9a84c" strokeWidth="1.5"/>
+                  </svg>
+                  <p className="text-brand-muted text-sm mt-4">No Photos Available</p>
+                </div>
+              )}
+            </div>
+
+            {/* Thumbnail strip */}
+            {listing.images && listing.images.length > 1 && (
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {listing.images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setImgIdx(i)}
+                    className={clsx(
+                      'flex-shrink-0 w-20 h-16 rounded-xl overflow-hidden border-2 transition-all',
+                      i === imgIdx ? 'border-brand-gold' : 'border-transparent opacity-60 hover:opacity-100'
+                    )}
+                  >
+                    <img src={img} alt={`view ${i+1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
               </div>
             )}
-          </div>
 
-          {/* Title + price */}
-          <div className="mb-6">
-            <h1 className="text-2xl md:text-3xl font-serif font-bold text-brand-gold mb-2">{listing.title}</h1>
-            <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-brand-light">{formatCurrency(listing.price)}</span>
-              <span className={clsx(
-                'px-3 py-1 rounded border text-sm',
-                listing.condition === 'Excellent' ? 'text-green-400 border-green-600/50 bg-green-900/20' :
-                listing.condition === 'Good' ? 'text-blue-400 border-blue-600/50 bg-blue-900/20' :
-                'text-yellow-400 border-yellow-600/50 bg-yellow-900/20'
-              )}>
-                {listing.condition}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 mt-2 text-brand-light/50 text-sm">
-              <MapPin size={14} />
-              <span>{listing.location}</span>
-              <span className="mx-2">·</span>
-              <Calendar size={14} />
-              <span>Listed {formatDate(listing.createdAt)}</span>
-            </div>
-          </div>
-
-          {/* Specs grid */}
-          <div className="vintage-card rounded-lg p-6 mb-6">
-            <h2 className="text-brand-gold font-semibold mb-4 flex items-center gap-2">
-              <Settings size={18} /> Vehicle Specifications
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {specs.map(s => (
-                <div key={s.label} className="border-b border-brand-gold/10 pb-2">
-                  <p className="text-brand-light/40 text-xs uppercase tracking-wider">{s.label}</p>
-                  <p className="text-brand-light text-sm font-medium mt-0.5">{s.value}</p>
+            {/* Title + key specs */}
+            <div className="bg-brand-surface border border-white/6 rounded-2xl p-6">
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <div>
+                  <h1 className="text-2xl md:text-3xl font-display font-bold text-brand-light leading-tight">
+                    {listing.title}
+                  </h1>
+                  <div className="flex items-center gap-3 mt-2">
+                    <span className={clsx('text-xs px-2.5 py-1 rounded-full border font-medium', conditionColors[listing.condition])}>
+                      {listing.condition}
+                    </span>
+                    <div className="flex items-center gap-1.5 text-brand-muted text-sm">
+                      <MapPin size={13} />
+                      <span>{listing.location}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-brand-muted text-sm">
+                      <Calendar size={13} />
+                      <span>Listed {formatDate(listing.createdAt)}</span>
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
+                <div className="text-right flex-shrink-0">
+                  <p className="text-3xl font-bold text-brand-gold font-display">{formatCurrency(listing.price)}</p>
+                </div>
+              </div>
 
-          {/* Description */}
-          <div className="vintage-card rounded-lg p-6 mb-6">
-            <h2 className="text-brand-gold font-semibold mb-4">Description</h2>
-            <p className="text-brand-light/70 leading-relaxed text-sm">{listing.description}</p>
-          </div>
-
-          {/* Features */}
-          {listing.features && listing.features.length > 0 && (
-            <div className="vintage-card rounded-lg p-6">
-              <h2 className="text-brand-gold font-semibold mb-4 flex items-center gap-2">
-                <CheckCircle size={18} /> Features & Options
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {listing.features.map(f => (
-                  <div key={f} className="flex items-center gap-2 text-brand-light/70 text-sm">
-                    <CheckCircle size={12} className="text-brand-gold/60 flex-shrink-0" />
-                    {f}
+              {/* Key specs row */}
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mt-4">
+                {keySpecs.map(spec => (
+                  <div key={spec.label} className="bg-brand-darker rounded-xl p-3 text-center">
+                    <div className="text-brand-gold/60 flex justify-center mb-1">{spec.icon}</div>
+                    <p className="text-brand-light text-xs font-semibold">{spec.value}</p>
+                    <p className="text-brand-muted text-xs mt-0.5">{spec.label}</p>
                   </div>
                 ))}
               </div>
             </div>
-          )}
-        </div>
 
-        {/* Right: Contact card */}
-        <div className="lg:col-span-1">
-          <div className="vintage-card rounded-lg p-6 sticky top-20">
-            <div className="text-center mb-6">
-              <p className="text-brand-light/50 text-sm">Asking Price</p>
-              <p className="text-4xl font-bold text-brand-gold">{formatCurrency(listing.price)}</p>
-            </div>
-            <div className="border-t border-brand-gold/20 pt-6 mb-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-brand-gold/20 flex items-center justify-center">
-                  <span className="text-brand-gold font-bold text-sm">{listing.sellerName[0]}</span>
+            {/* Full specs */}
+            <div className="bg-brand-surface border border-white/6 rounded-2xl p-6">
+              <h2 className="text-brand-light font-semibold mb-5 flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-brand-gold/10 flex items-center justify-center">
+                  <Info size={15} className="text-brand-gold" />
                 </div>
-                <div>
-                  <p className="text-brand-light font-semibold text-sm">{listing.sellerName}</p>
-                  <p className="text-brand-light/40 text-xs">{listing.location}</p>
-                </div>
+                Vehicle Specifications
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4">
+                {allSpecs.map(s => (
+                  <div key={s.label} className="">
+                    <p className="text-brand-muted text-xs font-medium uppercase tracking-wider">{s.label}</p>
+                    <p className="text-brand-light text-sm font-semibold mt-1">{s.value}</p>
+                  </div>
+                ))}
               </div>
             </div>
-            <button
-              onClick={() => setContactVisible(!contactVisible)}
-              className="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded-lg hover:bg-brand-gold/80 transition-colors mb-3"
-            >
-              {contactVisible ? 'Hide Contact' : 'Show Contact Info'}
-            </button>
-            {contactVisible && (
-              <div className="space-y-3 mt-4">
-                <div className="flex items-center gap-3 text-sm">
-                  <Phone size={16} className="text-brand-gold" />
-                  <a href={`tel:${listing.sellerPhone}`} className="text-brand-light hover:text-brand-gold">{listing.sellerPhone}</a>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Mail size={16} className="text-brand-gold" />
-                  <a href={`mailto:${listing.sellerEmail}`} className="text-brand-light hover:text-brand-gold break-all">{listing.sellerEmail}</a>
+
+            {/* Description */}
+            <div className="bg-brand-surface border border-white/6 rounded-2xl p-6">
+              <h2 className="text-brand-light font-semibold mb-4">Description</h2>
+              <p className="text-brand-muted leading-relaxed text-sm">{listing.description}</p>
+            </div>
+
+            {/* Features */}
+            {listing.features && listing.features.length > 0 && (
+              <div className="bg-brand-surface border border-white/6 rounded-2xl p-6">
+                <h2 className="text-brand-light font-semibold mb-4 flex items-center gap-2">
+                  <CheckCircle2 size={17} className="text-brand-gold" />
+                  Features & Options
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {listing.features.map(f => (
+                    <div key={f} className="flex items-center gap-2.5 bg-brand-darker rounded-xl px-3 py-2.5">
+                      <CheckCircle2 size={13} className="text-brand-gold/70 flex-shrink-0" />
+                      <span className="text-brand-muted text-xs font-medium">{f}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
-            <div className="mt-6 pt-6 border-t border-brand-gold/20 space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-brand-light/50">Year</span>
-                <span className="text-brand-light">{listing.year}</span>
+          </div>
+
+          {/* ── RIGHT COLUMN ── */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-32 space-y-4">
+              {/* Price card */}
+              <div className="bg-brand-surface border border-white/8 rounded-2xl p-6">
+                <div className="text-center pb-5 border-b border-white/5">
+                  <p className="text-brand-muted text-xs font-medium uppercase tracking-wider mb-2">Asking Price</p>
+                  <p className="text-4xl font-bold text-brand-gold font-display">{formatCurrency(listing.price)}</p>
+                </div>
+
+                {/* Seller info */}
+                <div className="py-5 border-b border-white/5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center font-bold text-brand-darker text-base">
+                      {listing.sellerName[0].toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-brand-light font-semibold text-sm">{listing.sellerName}</p>
+                      <p className="text-brand-muted text-xs flex items-center gap-1 mt-0.5">
+                        <MapPin size={11} />
+                        {listing.location}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contact button */}
+                <div className="pt-5">
+                  <button
+                    onClick={() => setContactVisible(!contactVisible)}
+                    className="w-full bg-brand-gold text-brand-darker font-bold py-3.5 rounded-xl hover:bg-brand-gold-light transition-all shadow-gold text-sm mb-3"
+                  >
+                    {contactVisible ? 'Hide Contact Info' : 'Show Contact Info'}
+                  </button>
+
+                  {contactVisible && (
+                    <div className="space-y-3 animate-slide-up">
+                      <a
+                        href={`tel:${listing.sellerPhone}`}
+                        className="flex items-center gap-3 p-3 rounded-xl bg-brand-darker border border-white/8 hover:border-brand-gold/30 transition-all group"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center">
+                          <Phone size={14} className="text-brand-gold" />
+                        </div>
+                        <span className="text-brand-light text-sm group-hover:text-brand-gold transition-colors">{listing.sellerPhone}</span>
+                      </a>
+                      <a
+                        href={`mailto:${listing.sellerEmail}`}
+                        className="flex items-center gap-3 p-3 rounded-xl bg-brand-darker border border-white/8 hover:border-brand-gold/30 transition-all group"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center">
+                          <Mail size={14} className="text-brand-gold" />
+                        </div>
+                        <span className="text-brand-light text-sm group-hover:text-brand-gold transition-colors break-all">{listing.sellerEmail}</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-brand-light/50">Mileage</span>
-                <span className="text-brand-light">{formatMileage(listing.mileage)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-brand-light/50">Transmission</span>
-                <span className="text-brand-light">{listing.transmission}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-brand-light/50">Engine</span>
-                <span className="text-brand-light">{listing.engineSize}</span>
+
+              {/* Quick specs */}
+              <div className="bg-brand-surface border border-white/6 rounded-2xl p-5">
+                <h3 className="text-brand-muted text-xs font-semibold uppercase tracking-wider mb-4">Quick Specs</h3>
+                <div className="space-y-3">
+                  {[
+                    { label: 'Year', value: String(listing.year) },
+                    { label: 'Make', value: listing.make },
+                    { label: 'Model', value: listing.model },
+                    { label: 'Mileage', value: formatMileage(listing.mileage) },
+                    { label: 'Transmission', value: listing.transmission },
+                    { label: 'Engine', value: listing.engineSize },
+                    { label: 'Drive', value: listing.driveType },
+                  ].map(s => (
+                    <div key={s.label} className="flex items-center justify-between">
+                      <span className="text-brand-muted text-xs">{s.label}</span>
+                      <span className="text-brand-light text-xs font-semibold">{s.value}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

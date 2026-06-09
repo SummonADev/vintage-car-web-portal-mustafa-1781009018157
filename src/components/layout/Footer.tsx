@@ -1,38 +1,101 @@
 import { Link } from 'react-router-dom';
+import { Mail, Phone, MapPin, Twitter, Instagram, Facebook } from 'lucide-react';
 import Logo from '@/components/Logo';
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-darker border-t border-brand-gold/20 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-2">
-            <Logo size="md" className="mb-4" />
-            <p className="text-brand-light/60 text-sm leading-relaxed max-w-sm">
-              The premier marketplace for vintage and classic automobiles. Buy, sell, and auction the world's finest collector cars.
+    <footer className="bg-brand-darker border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 mb-12">
+          {/* Brand */}
+          <div className="md:col-span-4">
+            <Logo size="md" className="mb-5" />
+            <p className="text-brand-muted text-sm leading-relaxed max-w-xs">
+              The world's premier marketplace for vintage and collector automobiles. Where passion meets premium.
             </p>
+            <div className="flex items-center gap-3 mt-6">
+              {[Twitter, Instagram, Facebook].map((Icon, i) => (
+                <button
+                  key={i}
+                  className="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-brand-muted hover:text-brand-gold hover:border-brand-gold/30 hover:bg-brand-gold/5 transition-all"
+                >
+                  <Icon size={15} />
+                </button>
+              ))}
+            </div>
           </div>
-          <div>
-            <h4 className="text-brand-gold font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h4>
-            <ul className="space-y-2 text-sm text-brand-light/60">
-              <li><Link to="/listings" className="hover:text-brand-gold transition-colors">Browse Listings</Link></li>
-              <li><Link to="/sell" className="hover:text-brand-gold transition-colors">Sell Your Car</Link></li>
-              <li><Link to="/auction" className="hover:text-brand-gold transition-colors">Live Auctions</Link></li>
-              <li><Link to="/auction/create" className="hover:text-brand-gold transition-colors">Create Auction</Link></li>
+
+          {/* Links */}
+          <div className="md:col-span-2">
+            <h4 className="text-brand-light text-xs font-semibold uppercase tracking-widest mb-5">Marketplace</h4>
+            <ul className="space-y-3">
+              {[
+                { to: '/listings', label: 'Browse Cars' },
+                { to: '/sell', label: 'Sell Your Car' },
+                { to: '/auction', label: 'Live Auctions' },
+                { to: '/auction/create', label: 'Create Auction' },
+              ].map(l => (
+                <li key={l.to}>
+                  <Link to={l.to} className="text-brand-muted text-sm hover:text-brand-gold transition-colors">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-          <div>
-            <h4 className="text-brand-gold font-semibold mb-4 text-sm uppercase tracking-wider">Account</h4>
-            <ul className="space-y-2 text-sm text-brand-light/60">
-              <li><Link to="/login" className="hover:text-brand-gold transition-colors">Log In</Link></li>
-              <li><Link to="/register" className="hover:text-brand-gold transition-colors">Register</Link></li>
-              <li><Link to="/dashboard" className="hover:text-brand-gold transition-colors">Dashboard</Link></li>
+
+          <div className="md:col-span-2">
+            <h4 className="text-brand-light text-xs font-semibold uppercase tracking-widest mb-5">Account</h4>
+            <ul className="space-y-3">
+              {[
+                { to: '/login', label: 'Log In' },
+                { to: '/register', label: 'Register' },
+                { to: '/dashboard', label: 'Dashboard' },
+              ].map(l => (
+                <li key={l.to}>
+                  <Link to={l.to} className="text-brand-muted text-sm hover:text-brand-gold transition-colors">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div className="md:col-span-4">
+            <h4 className="text-brand-light text-xs font-semibold uppercase tracking-widest mb-5">Contact</h4>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-3 text-brand-muted text-sm">
+                <div className="w-7 h-7 rounded-lg bg-brand-gold/10 flex items-center justify-center flex-shrink-0">
+                  <MapPin size={13} className="text-brand-gold" />
+                </div>
+                Beverly Hills, CA 90210
+              </li>
+              <li className="flex items-center gap-3 text-brand-muted text-sm">
+                <div className="w-7 h-7 rounded-lg bg-brand-gold/10 flex items-center justify-center flex-shrink-0">
+                  <Phone size={13} className="text-brand-gold" />
+                </div>
+                +1 (800) VCCP-CAR
+              </li>
+              <li className="flex items-center gap-3 text-brand-muted text-sm">
+                <div className="w-7 h-7 rounded-lg bg-brand-gold/10 flex items-center justify-center flex-shrink-0">
+                  <Mail size={13} className="text-brand-gold" />
+                </div>
+                hello@vccp.com
+              </li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-brand-gold/20 mt-8 pt-8 text-center text-brand-light/40 text-xs">
-          <p>© {new Date().getFullYear()} VCCP — Vintage Car Collectors Portal. All rights reserved.</p>
-          <p className="mt-1">All vehicle information provided by sellers. VCCP does not guarantee accuracy.</p>
+
+        <div className="section-divider mb-8" />
+
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-brand-muted text-xs">
+            © {new Date().getFullYear()} VCCP — Vintage Car Collectors Portal. All rights reserved.
+          </p>
+          <p className="text-brand-muted text-xs">
+            All vehicle information provided by sellers. VCCP does not guarantee accuracy.
+          </p>
         </div>
       </div>
     </footer>
