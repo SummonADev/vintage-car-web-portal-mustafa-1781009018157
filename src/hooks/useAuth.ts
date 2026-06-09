@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { User } from '@/types';
-import { getCurrentUser, setCurrentUser, loginUser, registerUser, generateId } from '@/lib/storage';
+import { getCurrentUser, setCurrentUser, loginUser, registerUser, generateId, getUsers } from '@/lib/storage';
 
 export function useAuth() {
   const [currentUser, setUser] = useState<User | null>(getCurrentUser());
@@ -20,7 +20,6 @@ export function useAuth() {
   };
 
   const register = (name: string, email: string, password: string, role: 'seller' | 'bidder' | 'both'): { success: boolean; error?: string } => {
-    const { getUsers } = require('@/lib/storage');
     const users = getUsers();
     if (users.find((u: User) => u.email === email)) {
       return { success: false, error: 'Email already registered' };

@@ -25,7 +25,7 @@ export function useListings() {
       result = result.filter(l => l.make === filters.make);
     }
     if (filters.model && filters.model !== '') {
-      result = result.filter(l => l.model.toLowerCase().includes(filters.model.toLowerCase()));
+      result = result.filter(l => l.model.toLowerCase().includes((filters.model as string).toLowerCase()));
     }
     if (filters.yearMin !== '' && filters.yearMin !== undefined) {
       result = result.filter(l => l.year >= Number(filters.yearMin));
@@ -42,20 +42,32 @@ export function useListings() {
     if (filters.mileageMax !== '' && filters.mileageMax !== undefined) {
       result = result.filter(l => l.mileage <= Number(filters.mileageMax));
     }
-    if (filters.condition && filters.condition !== '') {
-      result = result.filter(l => l.condition === filters.condition);
+    if (filters.condition) {
+      const cond = filters.condition as string;
+      if (cond !== '') {
+        result = result.filter(l => (l.condition as string) === cond);
+      }
     }
-    if (filters.bodyStyle && filters.bodyStyle !== '') {
-      result = result.filter(l => l.bodyStyle === filters.bodyStyle);
+    if (filters.bodyStyle) {
+      const bs = filters.bodyStyle as string;
+      if (bs !== '') {
+        result = result.filter(l => (l.bodyStyle as string) === bs);
+      }
     }
-    if (filters.fuelType && filters.fuelType !== '') {
-      result = result.filter(l => l.fuelType === filters.fuelType);
+    if (filters.fuelType) {
+      const ft = filters.fuelType as string;
+      if (ft !== '') {
+        result = result.filter(l => (l.fuelType as string) === ft);
+      }
     }
-    if (filters.transmission && filters.transmission !== '') {
-      result = result.filter(l => l.transmission === filters.transmission);
+    if (filters.transmission) {
+      const tr = filters.transmission as string;
+      if (tr !== '') {
+        result = result.filter(l => (l.transmission as string) === tr);
+      }
     }
     if (filters.location && filters.location !== '') {
-      result = result.filter(l => l.location.toLowerCase().includes(filters.location.toLowerCase()));
+      result = result.filter(l => l.location.toLowerCase().includes((filters.location as string).toLowerCase()));
     }
     return result;
   }, []);
