@@ -31,10 +31,10 @@ export default function HomePage() {
 
   const makes = ['Ferrari', 'Porsche', 'Mercedes', 'Jaguar', 'Aston Martin', 'Bentley', 'Rolls-Royce', 'Bugatti'];
   const eras = [
-    { label: 'Pre-War', years: 'Before 1945', color: 'from-amber-900/30 to-amber-800/10' },
-    { label: 'Post-War', years: '1945 – 1959', color: 'from-yellow-900/30 to-yellow-800/10' },
-    { label: 'Classic Era', years: '1960 – 1979', color: 'from-orange-900/30 to-orange-800/10' },
-    { label: 'Modern Classic', years: '1980 – 2000', color: 'from-red-900/30 to-red-800/10' },
+    { label: 'Pre-War', years: 'Before 1945', color: 'from-orange-950/40 to-orange-900/10' },
+    { label: 'Post-War', years: '1945 – 1959', color: 'from-orange-900/30 to-orange-800/10' },
+    { label: 'Classic Era', years: '1960 – 1979', color: 'from-orange-800/25 to-orange-700/10' },
+    { label: 'Modern Classic', years: '1980 – 2000', color: 'from-orange-700/20 to-orange-600/10' },
   ];
 
   return (
@@ -42,13 +42,13 @@ export default function HomePage() {
       {/* ─── HERO ─── */}
       <section className="relative hero-bg min-h-[88vh] flex flex-col justify-center overflow-hidden">
         {/* Decorative orbs */}
-        <div className="absolute top-1/4 left-[10%] w-96 h-96 rounded-full bg-brand-gold/4 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-[10%] w-72 h-72 rounded-full bg-purple-900/10 blur-[100px] pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full bg-brand-gold/2 blur-[150px] pointer-events-none" />
+        <div className="absolute top-1/4 left-[10%] w-96 h-96 rounded-full bg-brand-gold/6 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-[10%] w-72 h-72 rounded-full bg-orange-900/15 blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full bg-brand-gold/3 blur-[150px] pointer-events-none" />
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
           {/* Tag */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-semibold uppercase tracking-widest mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/25 text-brand-gold text-xs font-semibold uppercase tracking-widest mb-8 animate-fade-in">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse" />
             The Premier Vintage Car Marketplace
           </div>
@@ -70,7 +70,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14 animate-fade-in">
             <Link
               to="/listings"
-              className="group flex items-center justify-center gap-2.5 px-8 py-4 bg-brand-gold text-brand-darker font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-gold text-base"
+              className="group flex items-center justify-center gap-2.5 px-8 py-4 bg-brand-gold text-white font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-gold text-base"
             >
               <Search size={18} />
               Browse All Cars
@@ -78,7 +78,7 @@ export default function HomePage() {
             </Link>
             <Link
               to="/auction"
-              className="group flex items-center justify-center gap-2.5 px-8 py-4 bg-white/5 border border-white/15 text-brand-light font-bold rounded-2xl hover:bg-white/10 hover:border-white/25 transition-all text-base backdrop-blur-sm"
+              className="group flex items-center justify-center gap-2.5 px-8 py-4 bg-white/5 border border-white/15 text-brand-light font-bold rounded-2xl hover:bg-white/10 hover:border-brand-gold/30 transition-all text-base backdrop-blur-sm"
             >
               <Gavel size={18} />
               Live Auctions
@@ -128,9 +128,9 @@ export default function HomePage() {
               <Link
                 key={make}
                 to={`/listings?make=${encodeURIComponent(make)}`}
-                className="group flex flex-col items-center gap-2 p-4 rounded-2xl bg-brand-surface border border-white/6 hover:border-brand-gold/30 hover:bg-brand-gold/5 transition-all text-center card-hover"
+                className="group flex flex-col items-center gap-2 p-4 rounded-2xl bg-brand-surface border border-white/6 hover:border-brand-gold/40 hover:bg-brand-gold/8 transition-all text-center card-hover"
               >
-                <div className="w-10 h-10 rounded-xl bg-brand-gold/10 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-brand-gold/12 flex items-center justify-center">
                   <span className="text-brand-gold text-xs font-bold">{make.slice(0,2).toUpperCase()}</span>
                 </div>
                 <span className="text-brand-light text-xs font-medium group-hover:text-brand-gold transition-colors leading-tight">{make}</span>
@@ -152,9 +152,9 @@ export default function HomePage() {
               <Link
                 key={era.label}
                 to={`/listings`}
-                className={`group relative p-6 rounded-2xl bg-gradient-to-br ${era.color} border border-white/8 hover:border-brand-gold/30 transition-all card-hover overflow-hidden`}
+                className={`group relative p-6 rounded-2xl bg-gradient-to-br ${era.color} border border-brand-gold/10 hover:border-brand-gold/35 transition-all card-hover overflow-hidden`}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/0 to-brand-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/0 to-brand-gold/8 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <p className="text-brand-gold font-bold text-lg font-display relative z-10">{era.label}</p>
                 <p className="text-brand-muted text-sm mt-1 relative z-10">{era.years}</p>
                 <ArrowRight size={16} className="text-brand-gold/40 mt-4 group-hover:translate-x-1 transition-transform relative z-10" />
@@ -241,11 +241,11 @@ export default function HomePage() {
                 tag: 'Fair'
               },
             ].map(f => (
-              <div key={f.title} className="relative p-6 rounded-2xl bg-brand-surface border border-white/6 hover:border-brand-gold/20 transition-all group">
+              <div key={f.title} className="relative p-6 rounded-2xl bg-brand-surface border border-white/6 hover:border-brand-gold/25 transition-all group">
                 <div className="absolute top-4 right-4 px-2 py-1 bg-brand-gold/10 rounded-lg">
                   <span className="text-brand-gold text-xs font-semibold">{f.tag}</span>
                 </div>
-                <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-4 group-hover:bg-brand-gold/15 transition-colors">
+                <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-4 group-hover:bg-brand-gold/18 transition-colors">
                   {f.icon}
                 </div>
                 <h3 className="text-brand-light font-semibold mb-2">{f.title}</h3>
@@ -258,10 +258,10 @@ export default function HomePage() {
 
       {/* ─── CTA ─── */}
       <section className="py-24 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/8 via-brand-darker to-brand-darker" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full bg-gradient-to-b from-brand-gold/20 via-brand-gold/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 via-brand-darker to-brand-darker" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full bg-gradient-to-b from-brand-gold/25 via-brand-gold/8 to-transparent" />
         <div className="relative z-10 max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-semibold mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/25 text-brand-gold text-xs font-semibold mb-6">
             <Zap size={12} />
             Ready to Sell?
           </div>
@@ -276,13 +276,13 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/sell"
-              className="px-8 py-4 bg-brand-gold text-brand-darker font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-gold text-base"
+              className="px-8 py-4 bg-brand-gold text-white font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-gold text-base"
             >
               List Your Car
             </Link>
             <Link
               to="/auction/create"
-              className="px-8 py-4 bg-white/5 border border-white/15 text-brand-light font-bold rounded-2xl hover:bg-white/10 transition-all text-base"
+              className="px-8 py-4 bg-white/5 border border-white/15 text-brand-light font-bold rounded-2xl hover:bg-white/10 hover:border-brand-gold/30 transition-all text-base"
             >
               Create Auction
             </Link>

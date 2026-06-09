@@ -17,7 +17,7 @@ export default function Footer() {
               {[Twitter, Instagram, Facebook].map((Icon, i) => (
                 <button
                   key={i}
-                  className="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-brand-muted hover:text-brand-gold hover:border-brand-gold/30 hover:bg-brand-gold/5 transition-all"
+                  className="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-brand-muted hover:text-brand-gold hover:border-brand-gold/35 hover:bg-brand-gold/8 transition-all"
                 >
                   <Icon size={15} />
                 </button>

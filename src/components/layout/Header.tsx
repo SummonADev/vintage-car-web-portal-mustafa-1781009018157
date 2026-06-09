@@ -74,7 +74,7 @@ export default function Header() {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center gap-2 px-3 py-2 rounded-lg border border-brand-gold/20 bg-brand-gold/5 hover:bg-brand-gold/10 hover:border-brand-gold/40 transition-all duration-200 text-sm"
                 >
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center text-xs font-bold text-brand-darker">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-brand-gold to-orange-700 flex items-center justify-center text-xs font-bold text-white">
                     {currentUser.name[0].toUpperCase()}
                   </div>
                   <span className="hidden sm:block text-brand-light/80 max-w-[100px] truncate">{currentUser.name}</span>
@@ -117,7 +117,7 @@ export default function Header() {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 text-sm font-semibold bg-gradient-to-r from-brand-gold to-yellow-500 text-brand-darker rounded-lg hover:opacity-90 transition-all shadow-gold"
+                  className="px-4 py-2 text-sm font-semibold bg-gradient-to-r from-brand-gold to-orange-500 text-white rounded-lg hover:opacity-90 transition-all shadow-gold"
                 >
                   Register
                 </Link>
@@ -166,7 +166,7 @@ export default function Header() {
                 <Link
                   to="/register"
                   onClick={() => setMenuOpen(false)}
-                  className="flex-1 text-center py-2.5 bg-brand-gold text-brand-darker rounded-xl text-sm font-semibold"
+                  className="flex-1 text-center py-2.5 bg-brand-gold text-white rounded-xl text-sm font-semibold"
                 >
                   Register
                 </Link>

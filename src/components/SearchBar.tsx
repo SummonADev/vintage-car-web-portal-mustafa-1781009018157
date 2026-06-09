@@ -45,8 +45,8 @@ export default function SearchBar({ onSearch, initialFilters = {} }: SearchBarPr
 
   const hasFilters = Object.values(filters).some(v => v !== '' && v !== undefined);
 
-  const selectCls = 'w-full bg-brand-darker border border-white/10 rounded-xl px-3 py-2.5 text-brand-light text-sm focus:outline-none focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/10 transition-all appearance-none cursor-pointer';
-  const inputCls = 'w-full bg-brand-darker border border-white/10 rounded-xl px-3 py-2.5 text-brand-light text-sm focus:outline-none focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/10 transition-all placeholder-brand-muted';
+  const selectCls = 'w-full bg-brand-darker border border-white/10 rounded-xl px-3 py-2.5 text-brand-light text-sm focus:outline-none focus:border-brand-gold/60 focus:ring-2 focus:ring-brand-gold/12 transition-all appearance-none cursor-pointer';
+  const inputCls = 'w-full bg-brand-darker border border-white/10 rounded-xl px-3 py-2.5 text-brand-light text-sm focus:outline-none focus:border-brand-gold/60 focus:ring-2 focus:ring-brand-gold/12 transition-all placeholder-brand-muted';
   const labelCls = 'block text-brand-muted text-xs font-medium mb-1.5 uppercase tracking-wider';
 
   return (
@@ -60,7 +60,7 @@ export default function SearchBar({ onSearch, initialFilters = {} }: SearchBarPr
             placeholder="Search make, model, year..."
             value={filters.keyword || ''}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('keyword', e.target.value)}
-            className="w-full bg-brand-surface border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-brand-light text-sm focus:outline-none focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/10 transition-all placeholder-brand-muted"
+            className="w-full bg-brand-surface border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-brand-light text-sm focus:outline-none focus:border-brand-gold/60 focus:ring-2 focus:ring-brand-gold/12 transition-all placeholder-brand-muted"
           />
         </div>
         <button
@@ -69,7 +69,7 @@ export default function SearchBar({ onSearch, initialFilters = {} }: SearchBarPr
           className={clsx(
             'flex items-center gap-2 px-4 py-3.5 rounded-2xl border text-sm font-medium transition-all',
             expanded
-              ? 'bg-brand-gold/15 border-brand-gold/40 text-brand-gold'
+              ? 'bg-brand-gold/15 border-brand-gold/50 text-brand-gold'
               : 'bg-brand-surface border-white/10 text-brand-muted hover:text-brand-light hover:border-white/20'
           )}
         >
@@ -79,7 +79,7 @@ export default function SearchBar({ onSearch, initialFilters = {} }: SearchBarPr
         </button>
         <button
           type="submit"
-          className="px-6 py-3.5 bg-brand-gold text-brand-darker font-semibold rounded-2xl hover:bg-brand-gold-light transition-all text-sm shadow-gold whitespace-nowrap"
+          className="px-6 py-3.5 bg-brand-gold text-white font-semibold rounded-2xl hover:bg-brand-gold-light transition-all text-sm shadow-gold whitespace-nowrap"
         >
           Search
         </button>

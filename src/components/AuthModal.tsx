@@ -49,7 +49,7 @@ export default function AuthModal({ mode, onClose, onSuccess, redirectMessage }:
   };
 
   const inputWrapCls = 'relative';
-  const inputCls = 'w-full bg-brand-darker border border-white/10 rounded-xl px-4 py-3.5 pl-11 text-brand-light text-sm focus:outline-none focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/10 transition-all placeholder-brand-muted';
+  const inputCls = 'w-full bg-brand-darker border border-white/10 rounded-xl px-4 py-3.5 pl-11 text-brand-light text-sm focus:outline-none focus:border-brand-gold/60 focus:ring-2 focus:ring-brand-gold/12 transition-all placeholder-brand-muted';
   const iconCls = 'absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-muted';
 
   const roles = [
@@ -83,7 +83,7 @@ export default function AuthModal({ mode, onClose, onSuccess, redirectMessage }:
           </div>
 
           {redirectMessage && (
-            <div className="mb-4 px-4 py-3 bg-brand-gold/10 border border-brand-gold/20 rounded-xl text-brand-gold text-sm text-center">
+            <div className="mb-4 px-4 py-3 bg-brand-gold/10 border border-brand-gold/25 rounded-xl text-brand-gold text-sm text-center">
               {redirectMessage}
             </div>
           )}
@@ -95,7 +95,7 @@ export default function AuthModal({ mode, onClose, onSuccess, redirectMessage }:
               className={clsx(
                 'flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all',
                 activeMode === 'login'
-                  ? 'bg-brand-gold text-brand-darker shadow-gold'
+                  ? 'bg-brand-gold text-white shadow-gold'
                   : 'text-brand-muted hover:text-brand-light'
               )}
             >
@@ -106,7 +106,7 @@ export default function AuthModal({ mode, onClose, onSuccess, redirectMessage }:
               className={clsx(
                 'flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all',
                 activeMode === 'register'
-                  ? 'bg-brand-gold text-brand-darker shadow-gold'
+                  ? 'bg-brand-gold text-white shadow-gold'
                   : 'text-brand-muted hover:text-brand-light'
               )}
             >
@@ -146,7 +146,7 @@ export default function AuthModal({ mode, onClose, onSuccess, redirectMessage }:
                         className={clsx(
                           'px-3 py-2.5 rounded-xl border text-center transition-all',
                           role === r.value
-                            ? 'border-brand-gold/50 bg-brand-gold/10 text-brand-gold'
+                            ? 'border-brand-gold/60 bg-brand-gold/12 text-brand-gold'
                             : 'border-white/10 bg-brand-darker text-brand-muted hover:border-white/20'
                         )}
                       >
@@ -201,7 +201,7 @@ export default function AuthModal({ mode, onClose, onSuccess, redirectMessage }:
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-brand-gold to-yellow-500 text-brand-darker font-bold py-3.5 rounded-xl hover:opacity-90 transition-all disabled:opacity-50 shadow-gold text-sm mt-2"
+              className="w-full bg-gradient-to-r from-brand-gold to-orange-500 text-white font-bold py-3.5 rounded-xl hover:opacity-90 transition-all disabled:opacity-50 shadow-gold text-sm mt-2"
             >
               {loading ? 'Please wait...' : activeMode === 'login' ? 'Log In to VCCP' : 'Create Account'}
             </button>

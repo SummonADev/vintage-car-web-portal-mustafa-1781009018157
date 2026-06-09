@@ -8,14 +8,14 @@ export default {
     extend: {
       colors: {
         brand: {
-          gold: '#c9a84c',
-          'gold-light': '#f0d080',
-          dark: '#0f0f1a',
-          darker: '#0a0a0f',
-          surface: '#13131f',
-          'surface-2': '#1a1a2e',
-          light: '#e8e8f0',
-          muted: '#6b6b85',
+          gold: '#f97316',
+          'gold-light': '#fb923c',
+          dark: '#0f0f0f',
+          darker: '#0a0a0a',
+          surface: '#141414',
+          'surface-2': '#1c1c1c',
+          light: '#f5f5f5',
+          muted: '#737373',
         },
         auction: {
           live: '#ef4444',
@@ -34,8 +34,8 @@ export default {
         '3xl': '24px',
       },
       boxShadow: {
-        'gold': '0 0 20px rgba(201,168,76,0.2)',
-        'gold-lg': '0 0 40px rgba(201,168,76,0.15)',
+        'gold': '0 0 20px rgba(249,115,22,0.25)',
+        'gold-lg': '0 0 40px rgba(249,115,22,0.18)',
         'card': '0 4px 24px rgba(0,0,0,0.4)',
         'card-hover': '0 20px 60px rgba(0,0,0,0.5)',
       },

@@ -47,12 +47,12 @@ export default function AuctionCard({ auction }: AuctionCardProps) {
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-brand-surface to-brand-surface-2">
               <svg width="90" height="55" viewBox="0 0 90 55" fill="none">
-                <path d="M6 40 L9 32 L21 21 L69 21 L81 32 L84 40 Z" fill="#13131f" stroke="#c9a84c" strokeWidth="1.5" strokeLinejoin="round"/>
-                <path d="M21 21 L27 13 L63 13 L69 21" fill="#0f0f1a" stroke="#c9a84c" strokeWidth="1" strokeLinejoin="round"/>
-                <circle cx="21" cy="43" r="7" fill="none" stroke="#c9a84c" strokeWidth="1.5"/>
-                <circle cx="21" cy="43" r="2.5" fill="#c9a84c" opacity="0.7"/>
-                <circle cx="69" cy="43" r="7" fill="none" stroke="#c9a84c" strokeWidth="1.5"/>
-                <circle cx="69" cy="43" r="2.5" fill="#c9a84c" opacity="0.7"/>
+                <path d="M6 40 L9 32 L21 21 L69 21 L81 32 L84 40 Z" fill="#141414" stroke="#f97316" strokeWidth="1.5" strokeLinejoin="round"/>
+                <path d="M21 21 L27 13 L63 13 L69 21" fill="#1c1c1c" stroke="#f97316" strokeWidth="1" strokeLinejoin="round"/>
+                <circle cx="21" cy="43" r="7" fill="none" stroke="#f97316" strokeWidth="1.5"/>
+                <circle cx="21" cy="43" r="2.5" fill="#f97316" opacity="0.7"/>
+                <circle cx="69" cy="43" r="7" fill="none" stroke="#f97316" strokeWidth="1.5"/>
+                <circle cx="69" cy="43" r="2.5" fill="#f97316" opacity="0.7"/>
               </svg>
               <p className="text-brand-muted text-xs mt-3 font-medium">No Photo</p>
             </div>
