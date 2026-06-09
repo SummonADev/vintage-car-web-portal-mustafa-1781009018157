@@ -7,6 +7,7 @@ import SearchBar from '@/components/SearchBar';
 import { initSampleData, getListings, getAuctions } from '@/lib/storage';
 import { CarListing, AuctionListing, SearchFilters } from '@/types';
 import { useNavigate } from 'react-router-dom';
+import { getBrandLogo } from '@/lib/brandLogos';
 
 export default function HomePage() {
   const [featuredListings, setFeaturedListings] = useState<CarListing[]>([]);
@@ -29,7 +30,8 @@ export default function HomePage() {
     navigate(`/listings?${params.toString()}`);
   };
 
-  const makes = ['Ferrari', 'Porsche', 'Mercedes', 'Jaguar', 'Aston Martin', 'Bentley', 'Rolls-Royce', 'Bugatti'];
+  const makes = ['Ferrari', 'Porsche', 'Mercedes-Benz', 'Jaguar', 'Aston Martin', 'Bentley', 'Rolls-Royce', 'Bugatti', 'BMW', 'Ford', 'Chevrolet', 'Dodge'];
+
   const eras = [
     { label: 'Pre-War', years: 'Before 1945', color: 'from-orange-950/40 to-orange-900/10' },
     { label: 'Post-War', years: '1945 – 1959', color: 'from-orange-900/30 to-orange-800/10' },
@@ -41,19 +43,16 @@ export default function HomePage() {
     <div className="min-h-screen">
       {/* ─── HERO ─── */}
       <section className="relative hero-bg min-h-[88vh] flex flex-col justify-center overflow-hidden">
-        {/* Decorative orbs */}
         <div className="absolute top-1/4 left-[10%] w-96 h-96 rounded-full bg-brand-gold/6 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-1/4 right-[10%] w-72 h-72 rounded-full bg-orange-900/15 blur-[100px] pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full bg-brand-gold/3 blur-[150px] pointer-events-none" />
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
-          {/* Tag */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/25 text-brand-gold text-xs font-semibold uppercase tracking-widest mb-8 animate-fade-in">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse" />
             The Premier Vintage Car Marketplace
           </div>
 
-          {/* Headline */}
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-display font-bold leading-[1.05] mb-6 animate-slide-up">
             <span className="text-brand-light">Discover </span>
             <span className="gradient-text">Classic Cars</span>
@@ -66,7 +65,6 @@ export default function HomePage() {
             From pre-war classics to modern icons — all in one portal.
           </p>
 
-          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14 animate-fade-in">
             <Link
               to="/listings"
@@ -85,7 +83,6 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* Search */}
           <div className="max-w-3xl mx-auto animate-slide-up">
             <SearchBar onSearch={handleSearch} />
           </div>
@@ -123,19 +120,28 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-            {makes.map((make) => (
-              <Link
-                key={make}
-                to={`/listings?make=${encodeURIComponent(make)}`}
-                className="group flex flex-col items-center gap-2 p-4 rounded-2xl bg-brand-surface border border-white/6 hover:border-brand-gold/40 hover:bg-brand-gold/8 transition-all text-center card-hover"
-              >
-                <div className="w-10 h-10 rounded-xl bg-brand-gold/12 flex items-center justify-center">
-                  <span className="text-brand-gold text-xs font-bold">{make.slice(0,2).toUpperCase()}</span>
-                </div>
-                <span className="text-brand-light text-xs font-medium group-hover:text-brand-gold transition-colors leading-tight">{make}</span>
-              </Link>
-            ))}
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+            {makes.map((make) => {
+              const logo = getBrandLogo(make);
+              return (
+                <Link
+                  key={make}
+                  to={`/listings?make=${encodeURIComponent(make)}`}
+                  className="group flex flex-col items-center gap-3 p-5 rounded-2xl bg-brand-surface border border-white/6 hover:border-brand-gold/40 hover:bg-brand-gold/8 transition-all text-center card-hover"
+                >
+                  <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center transition-transform group-hover:scale-110 duration-300">
+                    {logo ? (
+                      logo
+                    ) : (
+                      <div className="w-12 h-12 rounded-xl bg-brand-gold/12 flex items-center justify-center">
+                        <span className="text-brand-gold text-xs font-bold">{make.slice(0, 2).toUpperCase()}</span>
+                      </div>
+                    )}
+                  </div>
+                  <span className="text-brand-light text-xs font-medium group-hover:text-brand-gold transition-colors leading-tight">{make}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

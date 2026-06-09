@@ -5,6 +5,7 @@ import SearchBar from '@/components/SearchBar';
 import { useListings } from '@/hooks/useListings';
 import { CarListing, SearchFilters } from '@/types';
 import { initSampleData } from '@/lib/storage';
+import { getBrandLogo } from '@/lib/brandLogos';
 import clsx from 'clsx';
 
 type SortOption = 'newest' | 'price_asc' | 'price_desc' | 'year_asc' | 'year_desc' | 'mileage_asc';
@@ -83,21 +84,35 @@ export default function ListingsPage() {
           <span>All Makes</span>
           <span className="text-xs opacity-60">{allListings.length}</span>
         </button>
-        {Object.entries(makeCounts).sort((a, b) => b[1] - a[1]).map(([make, count]) => (
-          <button
-            key={make}
-            onClick={() => handleMakeFilter(make)}
-            className={clsx(
-              'w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-all mb-1',
-              selectedMake === make
-                ? 'bg-brand-gold/10 text-brand-gold border border-brand-gold/20'
-                : 'text-brand-muted hover:text-brand-light hover:bg-white/5'
-            )}
-          >
-            <span>{make}</span>
-            <span className="text-xs opacity-50">{count}</span>
-          </button>
-        ))}
+        {Object.entries(makeCounts).sort((a, b) => b[1] - a[1]).map(([make, count]) => {
+          const logo = getBrandLogo(make);
+          return (
+            <button
+              key={make}
+              onClick={() => handleMakeFilter(make)}
+              className={clsx(
+                'w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-all mb-1',
+                selectedMake === make
+                  ? 'bg-brand-gold/10 text-brand-gold border border-brand-gold/20'
+                  : 'text-brand-muted hover:text-brand-light hover:bg-white/5'
+              )}
+            >
+              {logo ? (
+                <span className="w-6 h-6 rounded flex-shrink-0 overflow-hidden flex items-center justify-center" style={{ transform: 'scale(0.5)', transformOrigin: 'center', width: '24px', height: '24px' }}>
+                  <span className="block" style={{ transform: 'scale(0.4)', transformOrigin: 'center' }}>
+                    {logo}
+                  </span>
+                </span>
+              ) : (
+                <span className="w-6 h-6 rounded bg-brand-gold/15 flex-shrink-0 flex items-center justify-center text-brand-gold" style={{ fontSize: '8px', fontWeight: 700 }}>
+                  {make.slice(0, 2).toUpperCase()}
+                </span>
+              )}
+              <span className="flex-1 text-left truncate">{make}</span>
+              <span className="text-xs opacity-50 flex-shrink-0">{count}</span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Eras */}
@@ -128,7 +143,6 @@ export default function ListingsPage() {
               <p className="text-brand-muted text-xs mt-0.5">{results.length} vehicles found</p>
             </div>
             <div className="flex items-center gap-2">
-              {/* Mobile filter toggle */}
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
                 className="lg:hidden flex items-center gap-2 px-3 py-2 rounded-xl bg-brand-surface border border-white/10 text-brand-muted hover:text-brand-light text-sm transition-all"
@@ -137,7 +151,6 @@ export default function ListingsPage() {
                 Filters
               </button>
 
-              {/* Sort */}
               <select
                 value={sort}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleSort(e.target.value as SortOption)}
@@ -151,7 +164,6 @@ export default function ListingsPage() {
                 <option value="mileage_asc">Lowest Mileage</option>
               </select>
 
-              {/* View toggle */}
               <div className="flex items-center bg-brand-surface border border-white/10 rounded-xl overflow-hidden">
                 <button
                   onClick={() => setView('grid')}
@@ -172,7 +184,6 @@ export default function ListingsPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        {/* Search bar */}
         <div className="mb-8">
           <SearchBar onSearch={handleSearch} />
         </div>

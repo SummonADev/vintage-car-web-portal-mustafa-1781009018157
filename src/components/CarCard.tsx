@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { MapPin, Gauge, Calendar, Fuel, Settings2, Heart } from 'lucide-react';
 import { CarListing } from '@/types';
 import { formatCurrency, formatMileage } from '@/lib/utils';
+import { getBrandLogo } from '@/lib/brandLogos';
 import clsx from 'clsx';
 import { useState } from 'react';
 
@@ -20,6 +21,7 @@ const conditionConfig: Record<string, { label: string; cls: string }> = {
 export default function CarCard({ listing }: CarCardProps) {
   const [liked, setLiked] = useState(false);
   const cond = conditionConfig[listing.condition] || conditionConfig.Good;
+  const brandLogo = getBrandLogo(listing.make);
 
   return (
     <Link to={`/listings/${listing.id}`} className="block group card-hover">
@@ -71,13 +73,33 @@ export default function CarCard({ listing }: CarCardProps) {
               {formatCurrency(listing.price)}
             </span>
           </div>
+
+          {/* Brand logo overlay */}
+          {brandLogo && (
+            <div className="absolute bottom-3 right-3">
+              <div className="w-9 h-9 rounded-lg overflow-hidden shadow-lg bg-black/30 backdrop-blur-sm flex items-center justify-center" style={{ padding: '2px' }}>
+                <div style={{ transform: 'scale(0.6)', transformOrigin: 'center', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {brandLogo}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Content */}
         <div className="p-4">
-          <h3 className="text-brand-light font-semibold text-sm leading-snug mb-3 line-clamp-1 group-hover:text-brand-gold transition-colors">
-            {listing.title}
-          </h3>
+          <div className="flex items-center gap-2 mb-2">
+            {brandLogo && (
+              <div className="w-6 h-6 rounded overflow-hidden flex-shrink-0" style={{ overflow: 'hidden' }}>
+                <div style={{ transform: 'scale(0.4)', transformOrigin: 'top left', width: '60px', height: '60px' }}>
+                  {brandLogo}
+                </div>
+              </div>
+            )}
+            <h3 className="text-brand-light font-semibold text-sm leading-snug line-clamp-1 group-hover:text-brand-gold transition-colors flex-1">
+              {listing.title}
+            </h3>
+          </div>
 
           <div className="grid grid-cols-2 gap-y-2 gap-x-3">
             <div className="flex items-center gap-1.5 text-xs text-brand-muted">
